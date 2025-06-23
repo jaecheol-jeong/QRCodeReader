@@ -16,22 +16,19 @@ namespace QRCodeReader
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
                 openFileDialog.Filter = "Image Files|*.bmp;*.jpg;*.jpeg;*.png;*.gif|All files (*.*)|*.*";
-                openFileDialog.Title = "QR ÄÚµå ÀÌ¹ÌÁö ¼±ÅÃ";
+                openFileDialog.Title = "QR ì½”ë“œ ì´ë¯¸ì§€ ì„ íƒ";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
-                        // ¼±ÅÃµÈ ÀÌ¹ÌÁö¸¦ PictureBox¿¡ ·Îµå
                         pbQRCodeImage.Image = new Bitmap(openFileDialog.FileName);
 
-                        // QR ÄÚµå µğÄÚµù ½Ãµµ
-                        // BitmapÀ» Á÷Á¢ Decode ¸Ş¼­µå¿¡ Àü´Ş
                         DecodeQRCode(new Bitmap(openFileDialog.FileName));
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("ÀÌ¹ÌÁö¸¦ ·ÎµåÇÏ´Â Áß ¿À·ù°¡ ¹ß»ıÇß½À´Ï´Ù: " + ex.Message, "¿À·ù", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("ì´ë¯¸ì§€ë¥¼ ë¡œë“œí•˜ëŠ” ì¤‘ ì˜¤ë¥˜ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤: " + ex.Message, "ì˜¤ë¥˜", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -39,29 +36,26 @@ namespace QRCodeReader
 
         private void DecodeQRCode(Bitmap barcodeBitmap)
         {
-            // BarcodeReader ÀÎ½ºÅÏ½º »ı¼º (¿©±â¼­´Â ´õ ÀÌ»ó BitmapÀ» »ı¼ºÀÚ¿¡ Àü´ŞÇÏÁö ¾Ê½À´Ï´Ù.)
-            var reader = new BarcodeReader(); // ±âº» »ı¼ºÀÚ¸¦ »ç¿ëÇÕ´Ï´Ù.
+            var reader = new BarcodeReader();
 
-            // µğÄÚµù ¿É¼Ç ¼³Á¤ (ÀÌ ºÎºĞÀº ÀÌÀü°ú µ¿ÀÏÇÏ°Ô BarcodeReader ÀÎ½ºÅÏ½º¿¡ ¼Ó¼ºÀ¸·Î ¼³Á¤)
-            reader.AutoRotate = true; // ÀÌ¹ÌÁö ÀÚµ¿ È¸Àü ½Ãµµ
-            //reader.TryHarder = true; // ´õ ¸¹Àº ÆĞÅÏÀ» Å½»öÇÏ¿© ÀÎ½Ä·üÀ» ³ôÀÌÁö¸¸ ½Ã°£ÀÌ ´õ °É¸± ¼ö ÀÖ½À´Ï´Ù.
+            reader.AutoRotate = true; // ì´ë¯¸ì§€ ìë™ íšŒì „ ì‹œë„
             reader.Options = new DecodingOptions
             {
-                PossibleFormats = new BarcodeFormat[] { BarcodeFormat.QR_CODE } // QR ÄÚµå¸¸ ÀÎ½ÄÇÏµµ·Ï ÁöÁ¤
+                PossibleFormats = new BarcodeFormat[] { BarcodeFormat.QR_CODE } // QR ì½”ë“œë§Œ ì¸ì‹í•˜ë„ë¡ ì§€ì •
             };
 
-            // ÀÌ¹ÌÁö¿¡¼­ QR ÄÚµå µğÄÚµù
-            // Decode ¸Ş¼­µå¿¡ Bitmap °´Ã¼¸¦ Á÷Á¢ Àü´ŞÇÕ´Ï´Ù.
+            // ì´ë¯¸ì§€ì—ì„œ QR ì½”ë“œ ë””ì½”ë”©
+            // Decode ë©”ì„œë“œì— Bitmap ê°ì²´ë¥¼ ì§ì ‘ ì „ë‹¬í•©ë‹ˆë‹¤.
             Result result = reader.Decode(barcodeBitmap);
 
-            // °á°ú Ç¥½Ã
+            // ê²°ê³¼ í‘œì‹œ
             if (result != null)
             {
-                txtResult.Text = "¼º°øÀûÀ¸·Î µğÄÚµùµÇ¾ú½À´Ï´Ù:\r\n" + result.Text;
+                txtResult.Text = "ì„±ê³µì ìœ¼ë¡œ ë””ì½”ë”©ë˜ì—ˆìŠµë‹ˆë‹¤:\r\n" + result.Text;
             }
             else
             {
-                txtResult.Text = "QR ÄÚµå¸¦ Ã£À» ¼ö ¾ø°Å³ª µğÄÚµù¿¡ ½ÇÆĞÇß½À´Ï´Ù.";
+                txtResult.Text = "QR ì½”ë“œë¥¼ ì°¾ì„ ìˆ˜ ì—†ê±°ë‚˜ ë””ì½”ë”©ì— ì‹¤íŒ¨í–ˆìŠµë‹ˆë‹¤.";
             }
         }
     }
